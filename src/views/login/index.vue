@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import request from '@/utils/request'
+import { login } from '@/api/user'
 export default {
   name: 'loginIndex',
   data () {
@@ -60,7 +60,7 @@ export default {
         // 参数value代表是否选中的状态 返回布尔值
         // 判断value的状态
         // 验证通过:callback()
-        // 验证失败: callback里传一个错误对象 callback(new Error('错误信息'))
+        // 验证失败: callback里new一个错误对象 callback(new Error('错误信息'))
         agree: [
           {
             validator: (rule, value, callback) => {
@@ -95,12 +95,9 @@ export default {
       })
     },
     login () {
-      request({
-        method: 'POST',
-        url: '/mp/v1_0/authorizations',
-        // 配置post请求体
-        data: this.user
-      }).then(res => {
+      // 请求封装成函数 放到专门模块
+      // 后期好管理维护,重复使用度高
+      login(this.user).then(res => {
         // 登录成功
         this.$message({
           message: '登录成功',
