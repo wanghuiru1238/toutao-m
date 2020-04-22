@@ -22,8 +22,8 @@
       prop="code">
         <el-input v-model="user.code" placeholder="请输入验证码"></el-input>
       </el-form-item>
-      <el-form-item>
-         <el-checkbox v-model="checked">我已阅读并同意用户协议和隐私条款</el-checkbox>
+      <el-form-item prop="agree">
+         <el-checkbox v-model="user.agree">我已阅读并同意用户协议和隐私条款</el-checkbox>
       </el-form-item>
       <el-form-item>
         <el-button :loading="loginLoading" class="login-btn" type="primary" @click="onlogin">登录</el-button>
@@ -40,9 +40,10 @@ export default {
     return {
       user: {
         mobile: '', // 手机号
-        code: ''// 验证码
+        code: '', // 验证码
+        agree: false// 是否同意协议
       },
-      checked: false, // 是否同意协议选中状态
+      // checked: false, // 是否同意协议选中状态
       loginLoading: false, // 登录的loading状态
       formRules: {
         mobile: [
@@ -52,6 +53,26 @@ export default {
         code: [
           { required: true, message: '验证码不能为空', trigger: 'change' },
           { pattern: /^\d{6}$/, message: '请输入正确的验证码', trigger: 'change' }
+        ],
+        // 自定义效验规则
+        // validator对应的值是个函数有三个参数 (rule,value,callback) => {}
+        // 参数rule代表的是验证字段 agree的验证规则(一般用不到)
+        // 参数value代表是否选中的状态 返回布尔值
+        // 判断value的状态
+        // 验证通过:callback()
+        // 验证失败: callback里传一个错误对象 callback(new Error('错误信息'))
+        agree: [
+          {
+            validator: (rule, value, callback) => {
+              if (value) {
+                callback()
+              } else {
+                callback(new Error('请同意协议'))
+              }
+            },
+            message: '请同意协议',
+            trigger: blur
+          }
         ]
       }
     }
