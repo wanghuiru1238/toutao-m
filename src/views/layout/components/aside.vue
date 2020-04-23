@@ -1,10 +1,9 @@
 <template>
+  <div>
+    <img src="./logo_admin.png" alt="">
    <el-menu
-      default-active="2"
-      class="el-menu-vertical-demo"
-      @open="handleOpen"
-      @close="handleClose"
-      background-color="#545c64"
+      default-active="/"
+      background-color="#002033"
       text-color="#fff"
       active-text-color="#ffd04b"
       router>
@@ -39,6 +38,7 @@
         <span slot="title">个人设置</span>
       </el-menu-item>
     </el-menu>
+  </div>
 </template>
 
 <script>
@@ -53,15 +53,13 @@ export default {
   watch: {},
   created () {},
   mounted () {},
-  methods: {
-    handleOpen (key, keyPath) {
-      console.log(key, keyPath)
-    },
-    handleClose (key, keyPath) {
-      console.log(key, keyPath)
-    }
-  }
+  methods: {}
 }
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+img {
+    padding-top: 20px;
+    padding-left: 20px;
+}
+</style>
