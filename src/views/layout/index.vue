@@ -7,7 +7,29 @@
     </el-aside>
     <el-container>
        <!-- 顶部导航栏 -->
-      <el-header class="header">Header</el-header>
+      <el-header class="header">
+        <!-- 顶部导航-左侧-网站名称 -->
+        <div>
+          <i class="el-icon-s-fold"></i>
+          <span>江苏传智播客科技教育有限公司</span>
+        </div>
+        <!-- 顶部导航-右侧-用户信息 -->
+        <el-dropdown @command="handleCommand">
+          <div class="avatar-wrap">
+            <img class="avatar" src="http://toutiao.meiduo.site/FmOwC8s54p4PdlR8DBCuDNoqZLQb" alt="">
+            <span>用户昵称</span>
+            <i class="el-icon-arrow-down el-icon--right"></i>
+          </div>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="a">
+               <i class="el-icon-s-tools"></i>
+               个人设置</el-dropdown-item>
+            <el-dropdown-item command="b">
+              <i class="el-icon-unlock"></i>
+              退出登录</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </el-header>
       <!-- 内容部分 -->
       <el-main class="main">
         <!-- 子路由渲染出口 -->
@@ -43,16 +65,29 @@ export default {
   }
 }
 .header {
-  background-color: #ccc;
+  border-bottom: 1px solid #cccccc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.main {
-  background-color: #bbb;
-}
+// .main {
+//   background-color: #bbb;
+// }
 .layout-container {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   top: 0;
+}
+.avatar-wrap {
+  display: flex;
+  align-items: center;
+  .avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
 }
 </style>

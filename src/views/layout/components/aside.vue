@@ -1,6 +1,6 @@
 <template>
   <div>
-    <img src="./logo_admin.png" alt="">
+    <img class="img-logo" src="./logo_admin.png" alt="">
    <el-menu
       default-active="/"
       background-color="#002033"
@@ -58,7 +58,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-img {
+img-logo {
     padding-top: 20px;
     padding-left: 20px;
 }
