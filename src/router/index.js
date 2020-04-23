@@ -16,12 +16,15 @@ const routes = [
   // 页面公共组件路由 Layout
   {
     path: '/',
-    name: 'layout',
+    // 命名路由layout,有 默认子路由时,此时配置的路由名字没有意义(会有警告)
+    // 注意:如果有默认子路由时,就不需要给父路由起名字
+    // name: 'layout',
     component: Layout,
-    // 子路由(首页路由)
+    // 子路由(首页中间部分路由)
     children: [
       {
-        path: '/',
+        // 默认子路由只能有一个,其他子路由还要正常写path路径
+        path: '', // 子路由的path为空时,会作为 默认子路由渲染(渲染到父路由出口)
         name: 'home',
         component: Home
       }
