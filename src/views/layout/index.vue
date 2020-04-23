@@ -2,7 +2,8 @@
   <el-container class="layout-container">
     <!-- 侧边导航栏 -->
     <el-aside width="200px" class="aside">
-      <app-aside />
+      <!-- 侧边导航路由渲染出口 -->
+      <app-aside class="aside-menu"></app-aside>
     </el-aside>
     <el-container>
        <!-- 顶部导航栏 -->
@@ -37,6 +38,9 @@ export default {
 <style scoped lang="less">
 .aside {
   background-color: #002033;
+  .aside-menu {
+    height: 100%;
+  }
 }
 .header {
   background-color: #ccc;
