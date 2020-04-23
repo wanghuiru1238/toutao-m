@@ -16,8 +16,8 @@
         <!-- 顶部导航-右侧-用户信息 -->
         <el-dropdown @command="handleCommand">
           <div class="avatar-wrap">
-            <img class="avatar" src="http://toutiao.meiduo.site/FmOwC8s54p4PdlR8DBCuDNoqZLQb" alt="">
-            <span>用户昵称</span>
+            <img class="avatar" :src="user.photo" alt="">
+            <span>{{ user.name }}</span>
             <i class="el-icon-arrow-down el-icon--right"></i>
           </div>
           <el-dropdown-menu slot="dropdown">
@@ -41,6 +41,7 @@
 
 <script>
 import AppAside from './components/aside'
+import { getUserProfile } from '@/api/user'
 export default {
   name: 'LayoutIndex',
   components: {
@@ -48,13 +49,26 @@ export default {
   },
   props: {},
   data () {
-    return {}
+    return {
+      user: {}// 当前用户登录信息
+    }
   },
   computed: {},
   watch: {},
-  created () {},
+  // 初始化时请求加载
+  created () {
+    // 组件初始化 请求获取用户资料
+    this.loadUserProfile()
+  },
   mounted () {},
-  methods: {}
+  methods: {
+    loadUserProfile () {
+      getUserProfile().then(res => {
+        // console.log(res)
+        this.user = res.data.data
+      })
+    }
+  }
 }
 </script>
 <style scoped lang="less">
