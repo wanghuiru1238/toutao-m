@@ -1,7 +1,9 @@
 <template>
   <el-container class="layout-container">
     <!-- 侧边导航栏 -->
-    <el-aside width="200px" class="aside">Aside</el-aside>
+    <el-aside width="200px" class="aside">
+      <app-aside />
+    </el-aside>
     <el-container>
        <!-- 顶部导航栏 -->
       <el-header class="header">Header</el-header>
@@ -15,9 +17,12 @@
 </template>
 
 <script>
+import AppAside from './components/aside'
 export default {
   name: 'LayoutIndex',
-  components: {},
+  components: {
+    AppAside
+  },
   props: {},
   data () {
     return {}
