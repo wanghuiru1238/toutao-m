@@ -13,12 +13,15 @@ export const login = data => {
 }
 // 获取用户信息
 export const getUserProfile = data => {
+  // 获取token
+  // const token = JSON.parse(window.localStorage.getItem('token'))
+  // console.log(token)
   return request({
     method: 'GET',
-    url: '/mp/v1_0/user/profile',
+    url: '/mp/v1_0/user/profile'
     // 设置请求头,携带token数据
-    headers: {
-      Authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTkxMDc3NzEsInVzZXJfaWQiOjEsInJlZnJlc2giOmZhbHNlLCJ2ZXJpZmllZCI6dHJ1ZX0.dXP72qoDgtLgc7PaQjWkAlS7Y3xhFrqgV71TWcn8j1E'
-    }
+    // headers: {
+    //   Authorization: `Bearer ${token}`
+    // }
   })
 }

@@ -91,10 +91,10 @@ export default {
           return
         }
         // 验证通过,提交登录请求
-        this.login()
+        this.loginIn()
       })
     },
-    login () {
+    loginIn () {
       // 请求封装成函数 放到专门模块
       // 后期好管理维护,重复使用度高
       login(this.user).then(res => {
@@ -109,7 +109,9 @@ export default {
         this.$router.push({
           name: 'home'
         })
-        console.log(res)
+        // 本地存储token
+        window.localStorage.setItem('token', JSON.stringify(res.data.data.token))
+        // console.log(res)
       }).catch(err => {
         // 登录失败
         console.log('登录失败', err)
