@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Login from '@/views/login'
 import Home from '@/views/home'
 import Layout from '@/views/layout'
+import Article from '@/views/article'
 
 Vue.use(VueRouter)
 
@@ -27,6 +28,11 @@ const routes = [
         path: '', // 子路由的path为空时,会作为 默认子路由渲染(渲染到父路由出口)
         name: 'home',
         component: Home
+      },
+      {
+        path: '/article',
+        name: 'article',
+        component: Article
       }
     ]
   }
