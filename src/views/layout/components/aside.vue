@@ -1,12 +1,13 @@
 <template>
   <div>
-    <img class="img-logo" src="./logo_admin.png" alt="">
+    <div class="img-logo"></div>
    <el-menu
       default-active="/"
       background-color="#002033"
       text-color="#fff"
       active-text-color="#ffd04b"
-      router>
+      router
+      :collapse="isCollapse">
       <!-- 此处router作用: 激活导航时 会把index作为path进行路由跳转-->
       <!-- el-menu-item的index属性值不可重复 -->
       <el-menu-item index="/">
@@ -45,9 +46,11 @@
 export default {
   name: 'AppAside',
   components: {},
-  props: {},
+  props: ['is-collapse'],
   data () {
-    return {}
+    return {
+      // isCollapse: true
+    }
   },
   computed: {},
   watch: {},
@@ -58,8 +61,11 @@ export default {
 </script>
 
 <style scoped lang="less">
-img-logo {
-    padding-top: 20px;
-    padding-left: 20px;
+.img-logo {
+  width: 100%;
+  // padding-top: 20px;
+  // padding-left: 20px;
+  background:url(./logo_admin.png) no-repeat;
+  height: 60px;
 }
 </style>

@@ -1,24 +1,30 @@
 <template>
   <el-container class="layout-container">
     <!-- 侧边导航栏 -->
-    <el-aside width="200px" class="aside">
+    <el-aside class="aside" width="auto">
       <!-- 侧边导航路由渲染出口 -->
-      <app-aside class="aside-menu"></app-aside>
+      <app-aside :is-collapse="isCollapse" class="aside-menu"></app-aside>
     </el-aside>
     <el-container>
        <!-- 顶部导航栏 -->
       <el-header class="header">
         <!-- 顶部导航-左侧-网站名称 -->
         <div>
-          <i class="el-icon-s-fold"></i>
+          <i
+          @click="isCollapse=!isCollapse"
+          :class="{
+            'el-icon-s-fold':isCollapse,
+            'el-icon-s-unfold':!isCollapse
+            }"></i>
           <span>江苏传智播客科技教育有限公司</span>
         </div>
         <!-- 顶部导航-右侧-用户信息 -->
-        <el-dropdown @command="handleCommand">
+        <el-dropdown>
           <div class="avatar-wrap">
             <img class="avatar" :src="user.photo" alt="">
             <span>{{ user.name }}</span>
-            <i class="el-icon-arrow-down el-icon--right"></i>
+            <i class="el-icon-arrow-down el-icon--right">
+            </i>
           </div>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="a">
@@ -50,7 +56,8 @@ export default {
   props: {},
   data () {
     return {
-      user: {}// 当前用户登录信息
+      user: {}, // 当前用户登录信息
+      isCollapse: true // 侧边栏展示状态
     }
   },
   computed: {},

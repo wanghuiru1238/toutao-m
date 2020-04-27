@@ -8,7 +8,7 @@ const request = axios.create({
 // 请求拦截器 所有请求会经过
 request.interceptors.request.use(
   function (config) {
-    console.log(config)
+    // console.log(config)
     // config是当前请求的相关配置信息  return 前可修改
     const token = JSON.parse(window.localStorage.getItem('token'))
     // 有登录用户信息 统一token
