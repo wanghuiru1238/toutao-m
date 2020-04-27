@@ -30,7 +30,9 @@
             <el-dropdown-item command="a">
                <i class="el-icon-s-tools"></i>
                个人设置</el-dropdown-item>
-            <el-dropdown-item command="b">
+            <el-dropdown-item
+            command="b"
+            @click.native="loginout">
               <i class="el-icon-unlock"></i>
               退出登录</el-dropdown-item>
           </el-dropdown-menu>
@@ -73,6 +75,27 @@ export default {
       getUserProfile().then(res => {
         // console.log(res)
         this.user = res.data.data
+      })
+    },
+    loginout () {
+      this.$confirm('请确认是否退出', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '退出成功!'
+        })
+        // 点击退出清除登录信息token
+        window.localStorage.removeItem('token')
+        // 跳转到登录页面
+        this.$router.push('/login')
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消退出'
+        })
       })
     }
   }

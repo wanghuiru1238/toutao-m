@@ -34,5 +34,21 @@ const routes = [
 const router = new VueRouter({
   routes
 })
+// 路由导航守卫(导航拦截器)
+router.beforeEach((to, from, next) => {
+  const token = JSON.parse(window.localStorage.getItem('token'))
+  // 校验非登录页面的登录状态
+  if (to.path !== '/login') {
+    // 如果有token 代表已登录
+    if (token) {
+      next()
+    } else {
+      // 没有token 跳转到登录页面
+      next('/login')
+    }
+  } else {
+    next()
+  }
+})
 
 export default router
