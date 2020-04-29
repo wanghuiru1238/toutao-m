@@ -74,11 +74,17 @@
             prop="date"
             label="封面">
             <template slot-scope="scope">
-              <!-- 用组件设置封面图片 -->
+              <!-- 用组件设置封面图片  lazy懒加载-->
               <el-image
                 style="width: 100px; height: 100px"
                 :src="scope.row.cover.images[0]"
-                :fit="cover"></el-image>
+                :fit="cover"
+                lazy>
+                <!-- 加载图片时的占位内容 -->
+                <div slot="placeholder" class="image-slot">
+                  加载中<span class="dot">...</span>
+                </div>
+                </el-image>
               <!-- <img class="article-cover" v-if="scope.row.cover.images[0]" :src="scope.row.cover.images[0]" alt="">
               <img class="article-cover" v-else src="./noimage.gif" alt=""> -->
             </template>
