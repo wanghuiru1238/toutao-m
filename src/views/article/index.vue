@@ -12,19 +12,30 @@
         <!-- 表单数据开始部分 -->
         <el-form ref="form" :model="form" label-width="50px" size="small">
             <el-form-item label="状态:">
-                <el-radio-group v-model="form.resource">
-                <el-radio label="全部"></el-radio>
-                <el-radio label="草稿"></el-radio>
-                <el-radio label="待审核"></el-radio>
-                <el-radio label="审核失败"></el-radio>
-                <el-radio label="审核通过"></el-radio>
-                <el-radio label="已删除"></el-radio>
+              <!-- 默认lable为文本和选中之后的value值 -->
+                <el-radio-group v-model="status">
+                <el-radio :label="null">全部</el-radio>
+                <el-radio :label="0">草稿</el-radio>
+                <el-radio :label="1">待审核</el-radio>
+                <el-radio :label="2">审核通过</el-radio>
+                <el-radio :label="3">审核失败</el-radio>
+                <el-radio :label="4">已删除</el-radio>
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="频道">
-                <el-select v-model="form.region" placeholder="请选择频道">
-                <el-option label="区域一" value="shanghai"></el-option>
-                <el-option label="区域二" value="beijing"></el-option>
+                <el-select v-model="channelId" placeholder="请选择频道">
+                <el-option
+                label="全部"
+                :value="null"
+                >
+                </el-option>
+                <el-option
+                :label="channel.name"
+                :value="channel.id"
+                v-for="(channel, index) in channels"
+                :key="index"
+                >
+                </el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="日期">
@@ -37,7 +48,7 @@
                 </el-date-picker>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="onSubmit">筛选</el-button>
+                <el-button type="primary" @click="loadArticle(1)">筛选</el-button>
             </el-form-item>
             </el-form>
         <!-- 表单数据结束 -->
@@ -121,7 +132,7 @@
 </template>
 
 <script>
-import { getArticle } from '@/api/article'
+import { getArticle, getArticleChannels } from '@/api/article'
 export default {
   name: 'ArticleIndex',
   components: {},
@@ -147,29 +158,41 @@ export default {
         { status: 4, text: '已删除', type: 'danger' }
       ],
       total_count: 0, // 文章总条数
-      pageSize: 10 // 每页数据条数
+      pageSize: 10, // 每页数据条数
+      status: null, // 文章查询状态[0 1 2 3 4],不传默认是全部
+      channels: [], // 文章频道列表
+      channelId: null // 查询文章频道
     }
   },
   computed: {},
   watch: {},
   created () {
     this.loadArticle(1)
+    this.loadChannels()
   },
   mounted () {},
   methods: {
     loadArticle (page = 1) {
       getArticle({
         page: page,
-        per_page: this.pageSize
+        per_page: this.pageSize,
+        status: this.status,
+        channel_id: this.channelId
       }).then(res => {
         // console.log(res)
         this.article = res.data.data.results
         this.total_count = res.data.data.total_count
       })
     },
-    onSubmit () {
-      console.log('submit!')
+    loadChannels () {
+      getArticleChannels().then(res => {
+        // console.log(res)
+        this.channels = res.data.data.channels
+      })
     },
+    // onSubmit () {
+    //   console.log('submit!')
+    // },
     onCurrentChange (page) {
       // console.log(page)
       this.loadArticle(page)
