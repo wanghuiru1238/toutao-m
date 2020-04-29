@@ -74,8 +74,13 @@
             prop="date"
             label="封面">
             <template slot-scope="scope">
-              <img class="article-cover" v-if="scope.row.cover.images[0]" :src="scope.row.cover.images[0]" alt="">
-              <img class="article-cover" v-else src="./noimage.gif" alt="">
+              <!-- 用组件设置封面图片 -->
+              <el-image
+                style="width: 100px; height: 100px"
+                :src="scope.row.cover.images[0]"
+                :fit="cover"></el-image>
+              <!-- <img class="article-cover" v-if="scope.row.cover.images[0]" :src="scope.row.cover.images[0]" alt="">
+              <img class="article-cover" v-else src="./noimage.gif" alt=""> -->
             </template>
             </el-table-column>
             <el-table-column
