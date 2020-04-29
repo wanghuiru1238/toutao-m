@@ -44,7 +44,7 @@
       </el-card>
       <el-card class="box-card">
         <div slot="header" class="clearfix">
-            根据筛选条件共查询到 46148 条结果：
+            根据筛选条件共查询到 {{ total_count }} 条结果：
         </div>
          <!-- 数据列表开始部分 -->
          <!-- 1.给table组件里的data属性绑定要展示的素组列表数据 注意: 表格组件会自动遍历
@@ -54,6 +54,7 @@
          3.表格列若需要展示其他非文本内容(例如:图片 按钮等)需使用自定义表格列模版
          注意: 自定义列模版需要使用template标签包起来-->
         <el-table
+            class="article-list"
             :data="article"
             stripe
             style="width: 100%"
@@ -61,6 +62,10 @@
             <el-table-column
             prop="date"
             label="封面">
+            <template slot-scope="scope">
+              <img class="article-cover" v-if="scope.row.cover.images[0]" :src="scope.row.cover.images[0]" alt="">
+              <img class="article-cover" v-else src="./noimage.gif" alt="">
+            </template>
             </el-table-column>
             <el-table-column
             prop="title"
@@ -70,8 +75,12 @@
             label="状态">
             <!-- 如在自定义列模版中获取当前遍历项数据  要在template标签上设置slot-scop="scope" -->
             <template slot-scope="scope">
-                <el-tag :type="articleStatus[scope.row.status].type">{{ articleStatus[scope.row.status].text }}</el-tag>
-                <!-- <el-tag v-else-if="scope.row.status === 1">待审核</el-tag>
+                <el-tag
+                :type="articleStatus[scope.row.status].type">
+                {{ articleStatus[scope.row.status].text }}
+                </el-tag>
+                <!-- <el-tag type: 'info' v-if="scope.row.status === 0">草稿</el-tag>
+                <el-tag v-else-if="scope.row.status === 1">待审核</el-tag>
                 <el-tag type="success" v-else-if="scope.row.status === 2">审核通过</el-tag>
                 <el-tag type="warning" v-else-if="scope.row.status === 3">审核失败</el-tag>
                 <el-tag type="danger" v-else-if="scope.row.status === 4">已删除</el-tag> -->
@@ -100,8 +109,11 @@
       <!-- 列表分页开始部分 -->
       <el-pagination
         layout="prev, pager, next"
-        :total="1000"
-        background>
+        :total="total_count"
+        background
+        @current-change="onCurrentChange"
+        :page-size="pageSize"
+        >
       </el-pagination>
       <!-- 列表分页结束 -->
       </el-card>
@@ -133,24 +145,34 @@ export default {
         { status: 2, text: '审核通过', type: 'success' },
         { status: 3, text: '审核失败', type: 'warning' },
         { status: 4, text: '已删除', type: 'danger' }
-      ]
+      ],
+      total_count: 0, // 文章总条数
+      pageSize: 10 // 每页数据条数
     }
   },
   computed: {},
   watch: {},
   created () {
-    this.loadArticle()
+    this.loadArticle(1)
   },
   mounted () {},
   methods: {
-    loadArticle () {
-      getArticle().then(res => {
+    loadArticle (page = 1) {
+      getArticle({
+        page: page,
+        per_page: this.pageSize
+      }).then(res => {
         // console.log(res)
         this.article = res.data.data.results
+        this.total_count = res.data.data.total_count
       })
     },
     onSubmit () {
       console.log('submit!')
+    },
+    onCurrentChange (page) {
+      // console.log(page)
+      this.loadArticle(page)
     }
   }
 }
@@ -162,5 +184,12 @@ export default {
 }
 .table-list {
     margin-bottom: 20px;
+}
+.article-list {
+  margin-bottom: 25px;
+}
+.article-cover {
+  width: 100px;
+  background-size: cover;
 }
 </style>

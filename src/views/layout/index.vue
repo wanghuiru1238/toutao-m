@@ -59,7 +59,7 @@ export default {
   data () {
     return {
       user: {}, // 当前用户登录信息
-      isCollapse: true // 侧边栏展示状态
+      isCollapse: false // 侧边栏展示状态
     }
   },
   computed: {},
