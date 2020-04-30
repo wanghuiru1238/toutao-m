@@ -15,3 +15,11 @@ export const getArticleChannels = () => {
     url: '/mp/v1_0/channels'
   })
 }
+// 删除文章内容
+// 接口文档中的url地址后如果有 :xxx 代表需要传递路径参数
+export const deleteArticle = articleId => {
+  return request({
+    method: 'DELETE',
+    url: `/mp/v1_0/articles/${articleId}`
+  })
+}
