@@ -40,11 +40,14 @@
             </el-form-item>
             <el-form-item label="日期">
                 <el-date-picker
-                    v-model="form.data1"
+                    v-model="rangeDate"
                     type="datetimerange"
                     start-placeholder="开始日期"
                     end-placeholder="结束日期"
-                    :default-time="['12:00:00']">
+                    :default-time="['12:00:00']"
+                    format="yyyy-MM-dd"
+                    value-format="yyyy-MM-dd"
+                    >
                 </el-date-picker>
             </el-form-item>
             <el-form-item>
@@ -78,7 +81,7 @@
               <el-image
                 style="width: 100px; height: 100px"
                 :src="scope.row.cover.images[0]"
-                :fit="cover"
+                fit="cover"
                 lazy>
                 <!-- 加载图片时的占位内容 -->
                 <div slot="placeholder" class="image-slot">
@@ -172,7 +175,8 @@ export default {
       pageSize: 10, // 每页数据条数
       status: null, // 文章查询状态[0 1 2 3 4],不传默认是全部
       channels: [], // 文章频道列表
-      channelId: null // 查询文章频道
+      channelId: null, // 查询文章频道
+      rangeDate: null // 查询日期范围
     }
   },
   computed: {},
@@ -188,7 +192,9 @@ export default {
         page: page,
         per_page: this.pageSize,
         status: this.status,
-        channel_id: this.channelId
+        channel_id: this.channelId,
+        begin_pubdate: this.rangeDate ? this.rangeDate[0] : null, // 起始日期
+        end_pubdate: this.rangeDate ? this.rangeDate[1] : null // 截止日期
       }).then(res => {
         // console.log(res)
         this.article = res.data.data.results
