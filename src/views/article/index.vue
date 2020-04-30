@@ -51,7 +51,7 @@
                 </el-date-picker>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="loadArticle(1)">筛选</el-button>
+                <el-button :disabled="loading" type="primary" @click="loadArticle(1)">筛选</el-button>
             </el-form-item>
             </el-form>
         <!-- 表单数据结束 -->
@@ -72,7 +72,9 @@
             :data="article"
             stripe
             style="width: 100%"
-            size="small">
+            size="small"
+            v-loading="loading"
+            >
             <el-table-column
             prop="date"
             label="封面">
@@ -136,6 +138,7 @@
         layout="prev, pager, next"
         :total="total_count"
         background
+        :disabled="loading"
         @current-change="onCurrentChange"
         :page-size="pageSize"
         >
@@ -176,7 +179,8 @@ export default {
       status: null, // 文章查询状态[0 1 2 3 4],不传默认是全部
       channels: [], // 文章频道列表
       channelId: null, // 查询文章频道
-      rangeDate: null // 查询日期范围
+      rangeDate: null, // 查询日期范围
+      loading: true // 表格数据loading加载中
     }
   },
   computed: {},
@@ -188,6 +192,8 @@ export default {
   mounted () {},
   methods: {
     loadArticle (page = 1) {
+      // 请求一开始 显示加载中loading
+      this.loading = true
       getArticle({
         page: page,
         per_page: this.pageSize,
@@ -199,6 +205,8 @@ export default {
         // console.log(res)
         this.article = res.data.data.results
         this.total_count = res.data.data.total_count
+        // 请求结束 关闭loading加载中
+        this.loading = false
       })
     },
     loadChannels () {
