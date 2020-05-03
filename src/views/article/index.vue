@@ -121,13 +121,14 @@
             label="操作">
             <template slot-scope="scope">
                 <el-button
-                size="mini"
+                size="small"
                 circle
                 type="primary"
                 icon="el-icon-edit"
+                @click="$router.push('/publish?id=' + scope.row.id)"
                 ></el-button>
                 <el-button
-                size="mini"
+                size="small"
                 type="danger"
                 icon="el-icon-delete"
                 circle

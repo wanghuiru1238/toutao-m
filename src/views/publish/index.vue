@@ -5,7 +5,7 @@
         <!-- 面包屑导航开始部分 -->
         <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>文章发布</el-breadcrumb-item>
+            <el-breadcrumb-item>{{$route.query.id ? '修改文章' : '发布文章'}}</el-breadcrumb-item>
         </el-breadcrumb>
         <!-- 面包屑导航结束 -->
       </div>
@@ -33,7 +33,7 @@
             </el-select>
         </el-form-item>
         <el-form-item>
-            <el-button type="primary" @click="onPublish(false)">发表</el-button>
+            <el-button type="primary" @click="onPublish(false)">{{$route.query.id ? '修改' : '发布'}}</el-button>
             <el-button @click="onPublish(true)">存入草稿</el-button>
         </el-form-item>
       </el-form>
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { getArticleChannels, addArticle } from '@/api/article'
+import { getArticleChannels, addArticle, getSpecifyArticle, upArticle } from '@/api/article'
 export default {
   name: 'PublishIndex',
   components: {},
@@ -65,22 +65,53 @@ export default {
   watch: {},
   created () {
     this.loadChannels()
+    // 由于发布文章和修改文章用的是统一个组件 所以需要通过请求路径判断一下 当路径中带有请求参数id 就请求展示对应该id的文章内容
+    if (this.$route.query.id) {
+      this.upDataArticle()
+    }
   },
   mounted () {},
   methods: {
     onPublish (draft = false) {
-      addArticle(this.article, draft).then(res => {
-        // console.log(res)
-        this.$message({
-          message: '发布成功',
-          type: 'success'
+      // 判断 请求路径中带有参数 则执行编辑操作,五参数则执行添加操作
+      // 文章id
+      const articleId = this.$route.query.id
+      if (articleId) {
+        // 修改内容
+        upArticle(articleId, this.article, draft).then(res => {
+          // console.log(res)
+          this.$message({
+            message: `${draft ? '存入草稿' : '修改'}成功`,
+            type: 'success'
+          })
+          // 修改成功 跳转到文章管理页面
+          this.$router.push('/article')
         })
-      })
+      } else {
+        // 添加发布内容
+        addArticle(this.article, draft).then(res => {
+          // console.log(res)
+          this.$message({
+            message: `${draft ? '存入草稿' : '发布'}成功`,
+            type: 'success'
+          })
+          // 添加成功 跳转到文章管理页面
+          this.$router.push('/article')
+        })
+      }
     },
     loadChannels () {
       getArticleChannels().then(res => {
         // console.log(res)
         this.channels = res.data.data.channels
+      })
+    },
+    // 加载要修改的文章内容
+    upDataArticle () {
+      getSpecifyArticle(this.$route.query.id).then(res => {
+        // console.log(res)
+        // 模版绑定显示
+        this.article = res.data.data
       })
     }
   }
