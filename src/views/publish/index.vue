@@ -14,7 +14,13 @@
             <el-input v-model="article.title"></el-input>
         </el-form-item>
         <el-form-item label="内容">
-            <el-input type="textarea" v-model="article.content"></el-input>
+          <el-tiptap
+          v-model="article.content"
+          :extensions="extensions"
+          height="300"
+          placeholder="请输入文章内容"
+          ></el-tiptap>
+            <!-- <el-input type="textarea" v-model="article.content"></el-input> -->
         </el-form-item>
         <el-form-item label="封面">
             <el-radio-group v-model="article.cover.type">
@@ -43,9 +49,35 @@
 
 <script>
 import { getArticleChannels, addArticle, getSpecifyArticle, upArticle } from '@/api/article'
+import {
+  ElementTiptap,
+  Doc,
+  Text,
+  Paragraph,
+  Heading,
+  Bold,
+  Underline,
+  Italic,
+  Strike,
+  ListItem,
+  BulletList,
+  OrderedList,
+  Image,
+  CodeBlock,
+  Blockquote,
+  TextAlign,
+  Preview,
+  Fullscreen
+} from 'element-tiptap'
+// import { upImages } from '@/api/images'
+// 移入element-tiptap 样式
+import 'element-tiptap/lib/index.css'
+
 export default {
   name: 'PublishIndex',
-  components: {},
+  components: {
+    'el-tiptap': ElementTiptap
+  },
   props: {},
   data () {
     return {
@@ -58,7 +90,28 @@ export default {
           type: 0, // 文章类型(-1:自动，0-无图，1-1张，3-3张)
           images: [] // 文章封面图片地址
         }
-      }
+      },
+      extensions: [
+        new Doc(),
+        new Text(),
+        new Paragraph(),
+        new Heading({ level: 5 }), // 代表最多有5级标题 可改
+        new Bold({ bubble: true }), // 加粗
+        new Image({}
+        ), // 图片
+        // 在气泡菜单中渲染菜单按钮
+        new Underline(), // 下划线
+        new Italic(), // 斜体
+        new Strike(), // 删除线
+        new TextAlign(), // 对齐方式
+        new Blockquote(), // 引用
+        new ListItem(),
+        new BulletList(), // 无序列表
+        new OrderedList(), // 有序列表
+        new CodeBlock(), // 代码块
+        new Fullscreen(), // 全屏
+        new Preview() // 预览
+      ]
     }
   },
   computed: {},
